@@ -1,4 +1,4 @@
-name: Build and Push Docker Images
+name: Build and Update Deployment Manifests
 
 on:
   push:
@@ -6,8 +6,16 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-push-update:
     runs-on: ubuntu-latest
+
+    env:
+      REGISTRY: docker.io
+      DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+      IMAGE_API: diamondydev/blagenda-api
+      IMAGE_FRONT: diamondydev/blagenda-front
+      COMMIT_SHA: ${{ github.sha }}
 
     steps:
       - name: Checkout code
@@ -19,33 +27,32 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ env.DOCKER_USER }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
-      - name: Get short SHA
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Build and push backend (blagenda-api)
+      - name: Build and push backend
         uses: docker/build-push-action@v5
         with:
           context: ./backend
           push: true
-          tags: |
-            diamondydev/blagenda-api:latest
-            diamondydev/blagenda-api:${{ steps.vars.outputs.sha_short }}
-          platforms: linux/amd64
+          tags: ${{ env.IMAGE_API }}:${{ env.COMMIT_SHA }}
 
-      - name: Build and push frontend (blagenda-front)
+      - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           push: true
-          tags: |
-            diamondydev/blagenda-front:latest
-            diamondydev/blagenda-front:${{ steps.vars.outputs.sha_short }}
-          platforms: linux/amd64
-      - name: Trigger Argo CD sync
+          tags: ${{ env.IMAGE_FRONT }}:${{ env.COMMIT_SHA }}
+
+      - name: Update Kubernetes manifests
         run: |
-          curl -X POST https://34.163.20.241/applications/argocd/blagenda/sync \
-            -H "Authorization: Bearer ${{ secrets.ARGOCD_TOKEN }}"
+          sed -i "s|image: ${IMAGE_API}:.*|image: ${IMAGE_API}:${COMMIT_SHA}|" infra/k8s/api-deployment.yml
+          sed -i "s|image: ${IMAGE_FRONT}:.*|image: ${IMAGE_FRONT}:${COMMIT_SHA}|" infra/k8s/front-deployment.yml
+
+      - name: Commit and push updated manifests
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add infra/k8s/*.yml
+          git commit -m "chore: update deployment images to $COMMIT_SHA"
+          git push origin main
