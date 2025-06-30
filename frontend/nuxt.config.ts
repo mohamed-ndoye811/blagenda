@@ -16,6 +16,11 @@ export default defineNuxtConfig({
         },
     }
   },
+  ssr: true,
+  // Configuration pour éviter les redirections en production
+  nitro: {
+    preset: 'node-server'
+  },
   devServer: {
     port: parseInt(process.env.NUXT_APP_PORT ?? "3000"),
   },

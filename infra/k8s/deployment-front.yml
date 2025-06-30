@@ -24,4 +24,4 @@ spec:
             - containerPort: 3000
           env:
             - name: NUXT_APP_PORT
-              value: "5173"
+              value: "3000"
