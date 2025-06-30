@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware((to) => {
   if (publicRoutes.includes(to.path)) return
 
   // Si pas de token → redirige
-  if (!token.value) {
+  if (!token.value || token.value === '') {
     return navigateTo('/login')
   }
 })
