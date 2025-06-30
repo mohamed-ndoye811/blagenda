@@ -114,3 +114,30 @@ resource "google_storage_bucket" "blagenda_bucket" {
   force_destroy               = true
   uniform_bucket_level_access = true
 }
+
+resource "google_sql_database_instance" "postgres_instance" {
+  name             = "blagenda-db"
+  database_version = "POSTGRES_17"
+  region           = var.region
+
+  settings {
+    tier = "db-custom-1-3840"
+    backup_configuration {
+      enabled = true
+    }
+    ip_configuration {
+      ipv4_enabled = true
+    }
+  }
+}
+
+resource "google_sql_user" "postgres_user" {
+  name     = "postgres"
+  instance = google_sql_database_instance.postgres_instance.name
+  password = var.db_password
+}
+
+resource "google_sql_database" "main" {
+  name     = "blagenda"
+  instance = google_sql_database_instance.postgres_instance.name
+}

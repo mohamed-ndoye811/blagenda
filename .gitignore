@@ -45,3 +45,6 @@ lerna-debug.log*
 #===== INFRASTRUCTURE =====
 # Terraform
 /infra/terraform/*.json
+
+# K8S
+/infra/k8s/*secret*.yml
