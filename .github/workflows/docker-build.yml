@@ -37,3 +37,7 @@ jobs:
           push: true
           tags: diamondydev/blagenda-front:latest
           platforms: linux/amd64
+      - name: Trigger Argo CD sync
+        run: |
+          curl -X POST https://34.163.20.241/applications/argocd/blagenda/sync \
+            -H "Authorization: Bearer ${{ secrets.ARGOCD_TOKEN }}"
