@@ -46,8 +46,8 @@ jobs:
 
       - name: Update Kubernetes manifests
         run: |
-          sed -i "s|image: ${IMAGE_API}:.*|image: ${IMAGE_API}:${COMMIT_SHA}|" infra/k8s/api-deployment.yml
-          sed -i "s|image: ${IMAGE_FRONT}:.*|image: ${IMAGE_FRONT}:${COMMIT_SHA}|" infra/k8s/front-deployment.yml
+          sed -i "s|image: ${IMAGE_API}:.*|image: ${IMAGE_API}:${COMMIT_SHA}|" infra/k8s/deployment-back.yml
+          sed -i "s|image: ${IMAGE_FRONT}:.*|image: ${IMAGE_FRONT}:${COMMIT_SHA}|" infra/k8s/deployment-front.yml
 
       - name: Commit and push updated manifests
         run: |
