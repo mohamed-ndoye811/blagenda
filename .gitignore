@@ -1,9 +1,19 @@
-# compiled output
-/dist
-/node_modules
+# ===== NODE / JAVASCRIPT =====
+
+# Build output
+dist/
+build/
+.cache/
+.next/
+out/
+.temp/
+.tmp/
+
+# Dependencies
+node_modules/
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 pnpm-debug.log*
@@ -11,40 +21,64 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-# OS
+# Test coverage
+coverage/
+.nyc_output/
+
+# OS files
 .DS_Store
+Thumbs.db
 
-# Tests
-/coverage
-/.nyc_output
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
+# IDE / Editor
+.idea/
+.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+*.sublime-*
+*.code-workspace
 
-.data
-/files
+# Misc
 .env
-/ormconfig.json
+.env.*          # .env.dev, .env.prod...
+*.local
+.data/
+files/
+ormconfig.json
 .codegpt
 
+# ===== INFRASTRUCTURE =====
 
+## Terraform
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.tfvars
+infra/terraform/terraform.tfvars.json
+infra/terraform/*.backup
+infra/terraform/crash.log
+infra/terraform/*.log
+infra/terraform/*.tfplan
+infra/terraform/.terraform.lock.hcl
+infra/terraform/*.json
 
-#===== INFRASTRUCTURE =====
-# Terraform
-/infra/terraform/*.json
+## Kubernetes
+infra/k8s/*secret*.yml
+infra/k8s/*Secret*.yaml
+infra/k8s/kustomization.build.yaml
 
-# K8S
-/infra/k8s/*secret*.yml
+# Optional: exclude temporary overrides or debug manifests
+infra/k8s/tmp/
+infra/k8s/overrides/
+
+# ===== DOCKER (optional) =====
+.docker/
+*.tar
+*.img
+*.pid
+
+# ===== ARGOCD (optional) =====
+argocd.yaml
+argocd-app.yaml
+argocd/*.yaml

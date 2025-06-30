@@ -3,7 +3,10 @@ resource "google_project_service" "required_apis" {
   for_each = toset([
     "compute.googleapis.com",
     "container.googleapis.com",
-    "storage.googleapis.com"
+    "storage.googleapis.com",
+    "servicenetworking.googleapis.com",
+    "sqladmin.googleapis.com",
+    "cloudresourcemanager.googleapis.com"
   ])
   project = var.project_id
   service = each.key
@@ -115,29 +118,55 @@ resource "google_storage_bucket" "blagenda_bucket" {
   uniform_bucket_level_access = true
 }
 
+resource "google_compute_global_address" "private_ip_address" {
+  provider = google-beta
+
+  project       = var.project_id
+  name          = "private-ip-address"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.blagenda_network.id
+}
+
+resource "google_service_networking_connection" "private_vpc_connection" {
+  provider = google-beta
+
+  network = google_compute_network.blagenda_network.id
+  service = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
+}
+
 resource "google_sql_database_instance" "postgres_instance" {
-  name             = "blagenda-db"
-  database_version = "POSTGRES_17"
+  name             = "blagenda-database"
   region           = var.region
+  database_version = "POSTGRES_17"
+
+  depends_on = [
+    google_service_networking_connection.private_vpc_connection
+  ]
 
   settings {
-    tier = "db-custom-1-3840"
+    tier = "db-perf-optimized-N-2"
+
     backup_configuration {
       enabled = true
     }
+
     ip_configuration {
-      ipv4_enabled = true
+      ipv4_enabled    = false
+      private_network = google_compute_network.blagenda_network.id
     }
   }
+}
+
+resource "google_sql_database" "blagenda" {
+  name     = "blagenda"
+  instance = google_sql_database_instance.postgres_instance.name
 }
 
 resource "google_sql_user" "postgres_user" {
   name     = "postgres"
   instance = google_sql_database_instance.postgres_instance.name
   password = var.db_password
-}
-
-resource "google_sql_database" "main" {
-  name     = "blagenda"
-  instance = google_sql_database_instance.postgres_instance.name
 }

@@ -20,7 +20,7 @@ spec:
           image: diamondydev/blagenda-api:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 3001
+            - containerPort: 3333
           env:
             - name: NODE_ENV
               value: production

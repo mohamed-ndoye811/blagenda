@@ -1,6 +1,6 @@
 project_id      = "single-tide-464208-p6"
 region          = "europe-west9"
-gke_node_public_ip = "123.123.123.123"
+gke_node_public_ip = "34.155.234.105"
 gke_node_private_ip = "192.168.1.1"
 db_password = "password123"
 db_user = "user123"
