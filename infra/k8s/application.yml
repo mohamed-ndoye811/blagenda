@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/mohamed-ndoye811/blagenda # <-- à adapter
+    repoURL: https://github.com/mohamed-ndoye811/blagenda
     targetRevision: HEAD
     path: infra/k8s
   destination:
