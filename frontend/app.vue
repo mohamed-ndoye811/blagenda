@@ -1,3 +1,6 @@
+<script setup>
+</script>
+
 <template>
-    <div>Blagenda test edit et update kube</div>
+  <NuxtPage />
 </template>

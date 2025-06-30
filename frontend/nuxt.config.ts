@@ -1,7 +1,22 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+
+    timeline: {
+      enabled: true,
+    },
+  },
+  runtimeConfig : {
+    app: {
+        apiUrl: process.env.NUXT_APP_API_URL ?? "http://localhost:3000/api",
+        port: parseInt(process.env.NUXT_APP_PORT ?? "3000"),
+        auth: {
+            timeout: parseInt(process.env.NUXT_APP_AUTH_TIMEOUT ?? "604800"), // 7 days in seconds
+        },
+    }
+  },
   devServer: {
     port: parseInt(process.env.NUXT_APP_PORT ?? "3000"),
   },
