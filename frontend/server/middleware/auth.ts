@@ -5,7 +5,7 @@ export default defineEventHandler((event) => {
   const path = getRequestURL(event).pathname
 
   // Laisse passer les routes publiques et les appels API
-  if (path.startsWith('/api') || ['/login', '/register'].includes(path)) return
+  if (path.startsWith('/api') || protectedPaths.includes(path)) return
 
   // Redirection si token manquant
   if (!token) {
