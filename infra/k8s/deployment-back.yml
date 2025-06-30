@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blagenda-back
+  namespace: blagenda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: back
+  template:
+    metadata:
+      labels:
+        app: back
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: blagenda-back
+          image: diamondydev/blagenda-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3001

@@ -1,0 +1,11 @@
+model Event {
+  id          String     @id @default(uuid())
+  title       String     @db.VarChar(75)
+  description String     @db.VarChar(255)
+  tags        String[]   @db.VarChar(50) @default([])
+  optionsValues     Json
+  typeId      String
+  type        EventType @relation(fields: [typeId], references: [id])
+
+  @@map("event")
+}

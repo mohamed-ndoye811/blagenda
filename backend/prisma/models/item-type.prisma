@@ -1,0 +1,10 @@
+model ItemType {
+  id          String   @id @default(uuid())
+  slug        String
+  title       String   @db.VarChar(75)
+  description String   @db.VarChar(255)
+  fields      Json
+  items       Item[]   @relation("ItemToType")
+
+  @@map("item_type")
+}
