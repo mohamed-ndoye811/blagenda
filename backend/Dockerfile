@@ -11,13 +11,15 @@ RUN npx prisma generate
 
 COPY . .
 
-
 # Étape 2 — image finale
 FROM node:20-alpine
 
 WORKDIR /app
 COPY --from=builder /app ./
+COPY start.sh .
+RUN chmod +x start.sh
+
 ENV NODE_ENV=production
 EXPOSE 3001
 
-CMD ["node", "dist/main"]
+CMD ["./start.sh"]
