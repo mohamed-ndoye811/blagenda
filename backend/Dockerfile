@@ -30,6 +30,6 @@ COPY --from=builder /app/start.sh .
 RUN chmod +x start.sh
 
 ENV NODE_ENV=production
-EXPOSE 3001
+EXPOSE 3333
 
 CMD ["./start.sh"]
