@@ -19,6 +19,13 @@ export class CreateUserDto {
   })
   password: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    default: '1234',
+  })
+  confirm_password: string;
+
   @IsString()
   @ApiProperty()
   @Expose()

@@ -7,13 +7,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { hash } from 'argon2';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   constructor(private prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto) {
     if (!createUserDto.email || !createUserDto.password) {
       throw new ConflictException('Email and password are required');
     }
+
     const hashedPassword = await hash(createUserDto.password);
 
     try {
@@ -27,9 +28,7 @@ export class UserService {
         },
       });
 
-      return plainToInstance(CreateUserDto, newUser, {
-        excludeExtraneousValues: true,
-      });
+      return newUser;
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
@@ -56,6 +55,14 @@ export class UserService {
       omit: {
         password: true,
         resetPasswordToken: true,
+      },
+    });
+  }
+
+  async findByEmail(email: string) {
+    return this.prisma.user.findUnique({
+      where: {
+        email: email,
       },
     });
   }
