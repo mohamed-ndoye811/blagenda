@@ -3,11 +3,15 @@ kind: Application
 metadata:
   name: blagenda
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/image-list: blagenda-front=docker.io/diamondydev/blagenda-front
+    argocd-image-updater.argoproj.io/blagenda-front.update-strategy: latest
 spec:
   project: default
   source:
-    repoURL: https://github.com/mohamed-ndoye811/blagenda
-    targetRevision: HEAD
+    repoURL: git@github.com:mohamed-ndoye811/blagenda
+    targetRevision: main
     path: infra/k8s
   destination:
     server: https://kubernetes.default.svc
