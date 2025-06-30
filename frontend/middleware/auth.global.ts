@@ -1,8 +1,13 @@
 export default defineNuxtRouteMiddleware((to) => {
-    const user = useCookie('auth_token') // ou `useState('user')` si tu stockes l’utilisateur
+  const token = useCookie('auth_token')
 
-    // Redirige si le token n'existe pas
-    if (!user.value && !['/login', '/register'].includes(to.path)) {
-        return navigateTo('/login')
-    }
+  const publicRoutes = ['/login', '/register']
+
+  // Si déjà sur une route publique, ne rien faire
+  if (publicRoutes.includes(to.path)) return
+
+  // Si pas de token → redirige
+  if (!token.value) {
+    return navigateTo('/login')
+  }
 })
