@@ -1,26 +1,10 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-  const publicRoutes = ['/login', '/register']
+export default defineNuxtRouteMiddleware((to) => {
+  if (import.meta.server) return; // évite l'exécution en SSR (doublon)
 
-  // Ne jamais intercepter les appels API
-  if (to.path.startsWith('/api')) return
+  const token = useCookie("auth_token");
+  const publicRoutes = ["/login", "/register"];
 
-  // Ne rien faire si déjà sur une route publique
-  if (publicRoutes.includes(to.path)) return
+  if (to.path.startsWith("/api") || publicRoutes.includes(to.path)) return;
 
-  const token = useCookie('auth_token')
-
-  // Si pas de token
-  if (!token.value) {
-    // Cas SSR (serveur)
-    if (import.meta.server) {
-      // Stoppe la requête avec un 401 explicite
-      throw createError({
-        statusCode: 401,
-        statusMessage: 'Unauthorized',
-      })
-    }
-
-    // Cas client : redirection douce
-    return navigateTo('/login')
-  }
-})
+  if (!token.value) return navigateTo("/login");
+});
