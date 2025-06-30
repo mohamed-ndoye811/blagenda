@@ -4,9 +4,20 @@ metadata:
   name: blagenda
   namespace: argocd
   annotations:
+    # FRONT
+    argocd-image-updater.argoproj.io/image-list: |
+      blagenda-front=docker.io/diamondydev/blagenda-front,
+      blagenda-api=docker.io/diamondydev/blagenda-api
+    argocd-image-updater.argoproj.io/blagenda-front.update: latest
+    argocd-image-updater.argoproj.io/blagenda-front.allow-tags: regexp:^latest$
+    argocd-image-updater.argoproj.io/blagenda-api.update: latest
+    argocd-image-updater.argoproj.io/blagenda-api.allow-tags: regexp:^latest$
+
+    # STRATEGY
     argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/image-list: blagenda-front=docker.io/diamondydev/blagenda-front
-    argocd-image-updater.argoproj.io/blagenda-front.update-strategy: latest
+
+    # TRACKING (Application ArgoCD)
+    argocd.argoproj.io/tracking-id: blagenda:argoproj.io/Application:argocd/blagenda
 spec:
   project: default
   source:
