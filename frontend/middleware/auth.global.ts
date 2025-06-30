@@ -1,21 +1,26 @@
-export default defineNuxtRouteMiddleware((to) => {
-  const token = useCookie('auth_token')
+export default defineNuxtRouteMiddleware((to, from) => {
   const publicRoutes = ['/login', '/register']
 
-  // 🚫 Ignore les routes API
+  // Ne jamais intercepter les appels API
   if (to.path.startsWith('/api')) return
 
-  // Éviter les redirections infinies
+  // Ne rien faire si déjà sur une route publique
   if (publicRoutes.includes(to.path)) return
 
-  if ((!token.value || token.value === '') && !publicRoutes.includes(to.path)) {
-    // Utiliser throwError pour éviter les redirections 302 en production
+  const token = useCookie('auth_token')
+
+  // Si pas de token
+  if (!token.value) {
+    // Cas SSR (serveur)
     if (import.meta.server) {
+      // Stoppe la requête avec un 401 explicite
       throw createError({
         statusCode: 401,
-        statusMessage: 'Unauthorized'
+        statusMessage: 'Unauthorized',
       })
     }
+
+    // Cas client : redirection douce
     return navigateTo('/login')
   }
 })
