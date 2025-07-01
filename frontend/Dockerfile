@@ -13,7 +13,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Générer le site statique
-RUN yarn build && yarn generate
+RUN yarn build
 
 # ─────── FINAL STAGE (NGINX) ───────
 FROM nginx:stable-alpine
