@@ -1,31 +1,20 @@
-# Étape 1 — Build Nuxt avec Yarn + Alpine + dépendances natives
+# Étape 1 — build Nuxt
 FROM node:20-alpine AS builder
 
-# Ajout des outils requis pour compilation (sharp, etc.)
-RUN apk add --no-cache \
-  git \
-  python3 \
-  make \
-  g++ \
-  libc6-compat
-
 WORKDIR /app
-
-# Installer les deps Node
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-
 COPY . .
-RUN yarn build
+RUN npm ci
+RUN npm run build
 
-# Étape 2 — Runtime léger
+# Étape 2 — image finale légère
 FROM node:20-alpine
 
 WORKDIR /app
+RUN npm install -g serve
 
-COPY --from=builder /app ./
+COPY --from=builder /app/.output/public ./public
 
-ENV NODE_ENV=production
+ENV PORT=3000
 EXPOSE 3000
 
-CMD ["node", ".output/server/index.mjs"]
+CMD ["serve", "public", "-l", "3000"]

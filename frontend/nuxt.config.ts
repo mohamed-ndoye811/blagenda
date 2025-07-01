@@ -13,16 +13,14 @@ export default defineNuxtConfig({
       },
     },
   },
-  ssr: true,
+  ssr: false,
   // Configuration pour éviter les redirections en production
   nitro: {
     preset: "node-server",
+    erveStatic: true,
   },
   devServer: {
     port: parseInt(process.env.NUXT_APP_PORT ?? "3000"),
-  },
-  routeRules: {
-    "/api/**": { ssr: false },
   },
   modules: [
     "@nuxt/eslint",
