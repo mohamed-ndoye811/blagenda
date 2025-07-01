@@ -1,8 +1,5 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
-  nitro: {
-    logLevel: "debug",
-  },
   devtools: {
     enabled: process.env.NODE_ENV !== "production",
   },
@@ -14,7 +11,11 @@ export default defineNuxtConfig({
       }
     },
   },
-  ssr: false,
+  ssr: true,
+  nitro: {
+    preset: 'node-server',
+    logLevel: "debug",
+  },
   modules: [
     "@nuxt/eslint",
     "@nuxt/fonts",

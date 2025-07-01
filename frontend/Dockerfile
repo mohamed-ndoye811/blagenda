@@ -1,34 +1,30 @@
-# Étape 1 — Build de l'app Nuxt
+# Étape 1 — Build Nuxt SSR
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copie les fichiers de dépendances
+# Copie des fichiers de dépendances
 COPY package.json yarn.lock ./
 
 # Installation des dépendances
 RUN yarn install --frozen-lockfile
 
-# Copie du reste des fichiers
+# Copie du code source
 COPY . .
 
-# Build statique (SSG)
-RUN yarn build && yarn generate
+# Build Nuxt SSR
+RUN yarn build
 
-
-# Étape 2 — Image finale légère avec Serve
+# Étape 2 — Image finale
 FROM node:20-alpine
-
-# Installation de 'serve'
-RUN yarn global add serve
 
 WORKDIR /app
 
-# Copie des fichiers statiques générés
-COPY --from=builder /app/.output/public ./public
+# Copie du code généré (.output)
+COPY --from=builder /app/.output ./
 
-# Exposition du port (optionnel mais recommandé)
+# Exposition du port (doit correspondre à ton service/pod)
 EXPOSE 3000
 
-# Démarrage avec Serve sur le port 3000
-CMD ["serve", "public", "-l", "3000"]
+# Lancement du serveur Nuxt SSR
+CMD ["node", "server/index.mjs"]
