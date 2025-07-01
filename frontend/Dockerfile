@@ -13,8 +13,8 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build statique (SSG)
-# RUN yarn generate
 RUN yarn build
+RUN yarn generate
 
 
 # Étape 2 — Image finale légère avec Serve
@@ -32,4 +32,4 @@ COPY --from=builder /app/.output/public ./public
 EXPOSE 3000
 
 # Démarrage avec Serve sur le port 3000
-CMD ["serve", "public", "-l", "3000", "-s"]
+CMD ["serve", "public", "-l", "3000"]
