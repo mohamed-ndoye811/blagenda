@@ -27,9 +27,9 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: blagenda-config
-                  key: API_URL
+                  key: FRONT_API_URL
             - name: NUXT_APP_PORT
               valueFrom:
                 configMapKeyRef:
                   name: blagenda-config
-                  key: NUXT_APP_PORT
+                  key: FRONT_PORT
