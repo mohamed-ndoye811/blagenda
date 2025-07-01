@@ -33,3 +33,8 @@ spec:
                 configMapKeyRef:
                   name: blagenda-config
                   key: FRONT_PORT
+            - name: NUXT_APP_AUTH_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: blagenda-config
+                  key: FRONT_AUTH_TIMEOUT

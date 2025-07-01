@@ -6,3 +6,4 @@ metadata:
 data:
   FRONT_PORT: "3000"
   FRONT_API_URL: "https://blagenda.diamondy.dev/api"
+  FRONT_AUTH_TIMEOUT: "3600"
