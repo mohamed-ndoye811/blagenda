@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig();
 const authToken = useCookie('auth_token', {
-  maxAge: runtimeConfig.app.auth.timeout, // 7 days
+  maxAge: runtimeConfig.public.auth.timeout, // 7 days
   secure: true,
   sameSite: 'lax',
 });
@@ -22,7 +22,7 @@ function handleSubmit(event: Event) {
 
   if (email && password) {
     // Example: Send credentials to the server for authentication
-    fetch(`${runtimeConfig.app.apiUrl}/auth/register`, {
+    fetch(`${runtimeConfig.public.apiUrl}/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

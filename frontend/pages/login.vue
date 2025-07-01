@@ -3,7 +3,7 @@ import { RuntimeConfig } from '@nuxt/schema';
 const runtimeConfig = useRuntimeConfig();
 
 const authToken = useCookie('auth_token', {
-  maxAge: runtimeConfig.app.auth.timeout, // 7 days
+  maxAge: runtimeConfig.public.auth.timeout, // 7 days
   secure: true,
   sameSite: 'lax',
 });
@@ -21,7 +21,7 @@ function handleSubmit(event: Event) {
 
   if (email && password) {
     // Example: Send credentials to the server for authentication
-    fetch(`${runtimeConfig.app.apiUrl}/auth/login`, {
+    fetch(`${runtimeConfig.public.apiUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
