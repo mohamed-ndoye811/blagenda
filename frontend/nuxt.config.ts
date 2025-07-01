@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
   nitro: {
-    loglevel: "debug",
+    logLevel: "debug",
   },
   devtools: {
     enabled: process.env.NODE_ENV !== "production",
