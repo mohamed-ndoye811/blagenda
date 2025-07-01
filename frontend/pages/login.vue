@@ -1,7 +1,6 @@
 import { RuntimeConfig } from '@nuxt/schema';
 <script setup lang="ts">
 const runtimeConfig = useRuntimeConfig();
-
 const authToken = useCookie('auth_token', {
   maxAge: runtimeConfig.public.auth.timeout, // 7 days
   secure: true,
