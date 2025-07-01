@@ -1,23 +1,31 @@
-# -------- STAGE 1 : Build --------
-FROM node:20-slim AS build
+# syntax = docker/dockerfile:1
 
-# Préparation
-WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+ARG NODE_VERSION=20.18.0
 
-# Copie du code et build
-COPY . .
-RUN yarn build
+FROM node:${NODE_VERSION}-slim as base
 
-# -------- STAGE 2 : Production --------
-FROM node:20-slim
+ARG PORT=3000
 
-# Serveur statique
-RUN yarn global add serve
+WORKDIR /src
 
-WORKDIR /app
-COPY --from=build /app/.output/public ./public
+# Build
+FROM base as build
 
-EXPOSE 3000
-CMD ["node", ".output/server/index.mjs"]
+COPY --link package.json package-lock.json .
+RUN npm install
+
+COPY --link . .
+
+RUN npm run build
+
+# Run
+FROM base
+
+ENV PORT=$PORT
+ENV NODE_ENV=production
+
+COPY --from=build /src/.output /src/.output
+# Optional, only needed if you rely on unbundled dependencies
+# COPY --from=build /src/node_modules /src/node_modules
+
+CMD [ "node", ".output/server/index.mjs" ]
