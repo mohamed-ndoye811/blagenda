@@ -13,8 +13,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # Build statique (SSG)
-RUN yarn build
-RUN yarn generate
+RUN yarn build && yarn generate
 
 
 # Étape 2 — Image finale légère avec Serve
