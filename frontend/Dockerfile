@@ -26,8 +26,8 @@ COPY --from=builder /app/.output/public /usr/share/nginx/html
 
 COPY <<EOF /etc/nginx/conf.d/default.conf
 server {
-    listen 80;
-    listen [::]:80;
+    listen 3000;
+    listen [::]:3000;
     server_name localhost;
     
     root /usr/share/nginx/html;
