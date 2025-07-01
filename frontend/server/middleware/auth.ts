@@ -1,14 +1,8 @@
 // server/middleware/auth.ts
 export default defineEventHandler((event) => {
-  const protectedPaths = ['/', '/dashboard', '/mon-compte']
-  const token = getCookie(event, 'auth_token')
-  const path = getRequestURL(event).pathname
+  const token = parseCookies(event).auth_token;
 
-  // Laisse passer les routes publiques et les appels API
-  if (path.startsWith('/api') || protectedPaths.includes(path)) return
-
-  // Redirection si token manquant
-  if (!token) {
-    return sendRedirect(event, '/login')
+  if (!token && event.req.url && !event.req.url.startsWith('/api') && !['/login', '/register'].includes(event.req.url)) {
+    return sendRedirect(event, '/login');
   }
-})
+});
