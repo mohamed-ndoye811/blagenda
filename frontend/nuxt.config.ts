@@ -5,9 +5,9 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiUrl: process.env.NUXT_APP_API_URL ?? "http://localhost:3000/api",
+      apiUrl: process.env.NUXT_APP_API_URL,
       auth: {
-        timeout: parseInt(process.env.NUXT_APP_AUTH_TIMEOUT ?? "604800"),
+        timeout: parseInt(process.env.NUXT_APP_AUTH_TIMEOUT),
       }
     },
   },
