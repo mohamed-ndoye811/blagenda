@@ -4,5 +4,5 @@ metadata:
   name: blagenda-config
   namespace: blagenda
 data:
-  NUXT_APP_PORT: 3000
-  API_URL: https://blagenda.diamondy.dev/api
+  NUXT_APP_PORT: "3000"
+  NUXT_APP_API_URL: "https://blagenda.diamondy.dev/api"
