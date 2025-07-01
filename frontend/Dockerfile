@@ -20,4 +20,4 @@ WORKDIR /app
 COPY --from=build /app/.output/public ./public
 
 EXPOSE 3000
-CMD ["serve", "-s", "public", "-l", "3000"]
+CMD ["node", ".output/server/index.mjs"]
