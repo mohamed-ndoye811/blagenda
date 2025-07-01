@@ -18,10 +18,18 @@ spec:
         - name: regcred
       containers:
         - name: blagenda-front
-          image: diamondydev/blagenda-front:f440108fab5679fe12cf2a838020b7c13f5bf040
+          image: diamondydev/blagenda-front:b405fc602bd880c3abc1eb9c4afa6757c1d5daf6
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
+            - name: NUXT_APP_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: blagenda-config
+                  key: API_URL
             - name: NUXT_APP_PORT
-              value: "3000"
+              valueFrom:
+                configMapKeyRef:
+                  name: blagenda-config
+                  key: NUXT_APP_PORT
