@@ -18,7 +18,7 @@ spec:
         - name: regcred
       containers:
         - name: blagenda-front
-          image: diamondydev/blagenda-front:7b03d914e7f2ebd0d06dc158c40a5d3f3186f55b
+          image: diamondydev/blagenda-front:222eedfa17799bb863b1950102d61a26659e47a1
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
