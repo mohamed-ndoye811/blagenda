@@ -32,4 +32,4 @@ COPY --from=builder /app/.output/public ./public
 EXPOSE 3000
 
 # Démarrage avec Serve sur le port 3000
-CMD ["serve", "public", "-l", "3000"]
+CMD ["serve", "public", "-l", "3000", "-s"]
