@@ -17,11 +17,11 @@ spec:
     - host: blagenda.diamondy.dev
       http:
         paths:
-          - path: /api(/|$)(.*)
+          - path: /_nuxt/(.*)
             pathType: Prefix
             backend:
               service:
-                name: back
+                name: front
                 port:
                   number: 80
           - path: /(.*)
