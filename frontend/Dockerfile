@@ -1,20 +1,29 @@
-# Étape 1 — build Nuxt
 FROM node:20-alpine AS builder
 
 WORKDIR /app
-COPY . .
-RUN npm ci
-RUN npm run build
 
-# Étape 2 — image finale légère
+# Copier package files d'abord pour tirer parti du cache Docker
+COPY package.json yarn.lock ./
+
+# Installer les dépendances
+RUN yarn install --frozen-lockfile
+
+# Copier le reste des fichiers
+COPY . .
+
+# Build Nuxt
+RUN yarn build
+
+# Image finale
 FROM node:20-alpine
 
 WORKDIR /app
-RUN npm install -g serve
+
+# Installer un serveur statique (serve ou http-server)
+RUN yarn global add serve
 
 COPY --from=builder /app/.output/public ./public
 
-ENV PORT=3000
 EXPOSE 3000
 
 CMD ["serve", "public", "-l", "3000"]
