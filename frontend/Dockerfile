@@ -1,29 +1,32 @@
-# Étape 1 : Build de l'application
+# ─────── BUILD STAGE ───────
 FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copier les fichiers nécessaires pour optimiser le cache Docker
+# Copier package et lockfile
 COPY package.json yarn.lock ./
+
+# Installer les dépendances
 RUN yarn install --frozen-lockfile
 
-# Copier uniquement le code source utile
+# Copier le reste des fichiers
 COPY . .
 
-# Build statique
+# Générer le site statique
 RUN yarn build && yarn generate
 
-# Étape 2 : Image finale avec serveur statique ultra léger
-FROM node:20-alpine
+# ─────── FINAL STAGE (NGINX) ───────
+FROM nginx:stable-alpine
 
-WORKDIR /app
+# Supprime le site par défaut de NGINX
+RUN rm -rf /usr/share/nginx/html/*
 
-# Installer un serveur statique minimal
-RUN yarn global add serve
+# Copie les fichiers générés
+COPY --from=builder /app/.output/public /usr/share/nginx/html
 
-# Copier uniquement le site statique
-COPY --from=builder /app/.output/public ./public
+# Utiliser notre propre conf NGINX
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 3000
 
-CMD ["serve", "-s", "public", "-l", "3000"]
+CMD ["nginx", "-g", "daemon off;"]
