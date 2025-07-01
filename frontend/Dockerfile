@@ -1,44 +1,23 @@
-ARG NODE_VERSION=24.1.0
+# -------- STAGE 1 : Build --------
+FROM node:20-slim AS build
 
-# Create build stage
-FROM node:${NODE_VERSION}-slim AS build
-
-# Enable pnpm
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-
-# Set the working directory inside the container
+# Préparation
 WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# Copy package.json and pnpm-lock.yaml files to the working directory
-COPY ./package.json /app/
-COPY ./pnpm-lock.yaml /app/
+# Copie du code et build
+COPY . .
+RUN yarn build
 
-## Install dependencies
-RUN pnpm install --shamefully-hoist
+# -------- STAGE 2 : Production --------
+FROM node:20-slim
 
-# Copy the rest of the application files to the working directory
-COPY . ./
+# Serveur statique
+RUN yarn global add serve
 
-# Build the application
-RUN pnpm run build
-
-# Create a new stage for the production image
-FROM node:${NODE_VERSION}-slim
-
-# Set the working directory inside the container
 WORKDIR /app
+COPY --from=build /app/.output/public ./public
 
-# Copy the output from the build stage to the working directory
-COPY --from=build /app/.output ./
-
-# Define environment variables
-ENV HOST=0.0.0.0 NODE_ENV=production
-ENV NODE_ENV=production
-
-# Expose the port the application will run on
 EXPOSE 3000
-
-# Start the application
-CMD ["node","/app/server/index.mjs"]
+CMD ["serve", "-s", "public", "-l", "3000"]
