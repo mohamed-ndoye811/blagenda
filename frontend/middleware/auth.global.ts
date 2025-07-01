@@ -1,15 +1,14 @@
 export default defineNuxtRouteMiddleware((to) => {
-  // Empêche l'exécution côté serveur (SSR)
   if (import.meta.server) return;
 
-  const token = useCookie("auth_token");
-  const publicRoutes = ["/login", "/register"];
+  const token = useCookie("auth_token")
+  const publicRoutes = ["/login", "/register"]
 
-  // Ignore les appels API et les routes publiques
-  if (to.path.startsWith("/api") || publicRoutes.includes(to.path)) return;
+  // Ignorer les routes publiques
+  if (publicRoutes.includes(to.path)) return
 
-  // Redirige si le token est manquant
-  if (!token.value) {
-    return navigateTo("/login");
+  // ⚠️ Ajoute une vérification stricte
+  if (!token.value || token.value === "undefined" || token.value === "") {
+    return navigateTo("/login")
   }
-});
+})
