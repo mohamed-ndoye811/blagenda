@@ -1,32 +1,29 @@
-# syntax = docker/dockerfile:1
+# Étape 1 : Build de l'application
+FROM node:20-alpine AS builder
 
-ARG NODE_VERSION=24.1.0
+WORKDIR /app
 
-FROM node:${NODE_VERSION}-slim AS base
+# Copier les fichiers nécessaires pour optimiser le cache Docker
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-ARG PORT=3000
+# Copier uniquement le code source utile
+COPY . .
 
-WORKDIR /src
+# Build statique
+RUN yarn build && yarn generate
 
-# Build
-FROM base AS build
+# Étape 2 : Image finale avec serveur statique ultra léger
+FROM node:20-alpine
 
-COPY --link package.json .
-COPY --link yarn.lock .
-RUN yarn install
+WORKDIR /app
 
-COPY --link . .
+# Installer un serveur statique minimal
+RUN yarn global add serve
 
-RUN yarn build
+# Copier uniquement le site statique
+COPY --from=builder /app/.output/public ./public
 
-# Run
-FROM base
+EXPOSE 3000
 
-ENV PORT=$PORT
-ENV NODE_ENV=production
-
-COPY --from=build /src/.output /src/.output
-# Optional, only needed if you rely on unbundled dependencies
-# COPY --from=build /src/node_modules /src/node_modules
-
-CMD [ "node", ".output/server/index.mjs" ]
+CMD ["serve", "-s", "public", "-l", "3000"]
