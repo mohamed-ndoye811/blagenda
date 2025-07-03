@@ -63,7 +63,7 @@ resource "google_container_node_pool" "app_pool" {
 
   autoscaling {
     min_node_count = 1
-    max_node_count = 2
+    max_node_count = 3
   }
 
   node_locations = [
@@ -82,69 +82,11 @@ resource "google_container_node_pool" "app_pool" {
   }
 }
 
-# BUilder pool pour les builds
-resource "google_container_node_pool" "builder_pool" {
-  name       = "builder-pool"
-  location   = var.region
-  cluster    = google_container_cluster.blagenda_cluster.name
-  node_count = 1
-
-  autoscaling {
-    min_node_count = 1
-    max_node_count = 2
-  }
-
-  node_locations = [
-    "${var.region}-c"
-  ]
-
-  node_config {
-    machine_type = "e2-standard-2"
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-    tags = ["blagenda-builder"]
-    metadata = {
-      disable-legacy-endpoints = "true"
-    }
-  }
-}
-
-# Bucket de stockage
-resource "google_storage_bucket" "blagenda_bucket" {
-  name                        = "blagenda-bucket-${var.project_id}"
-  location                    = var.region
-  force_destroy               = true
-  uniform_bucket_level_access = true
-}
-
-resource "google_compute_global_address" "private_ip_address" {
-  provider = google-beta
-
-  project       = var.project_id
-  name          = "private-ip-address"
-  purpose       = "VPC_PEERING"
-  address_type  = "INTERNAL"
-  prefix_length = 16
-  network       = google_compute_network.blagenda_network.id
-}
-
-resource "google_service_networking_connection" "private_vpc_connection" {
-  provider = google-beta
-
-  network = google_compute_network.blagenda_network.id
-  service = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
-}
-
+# Database
 resource "google_sql_database_instance" "postgres_instance" {
   name             = "blagenda-database"
   region           = var.region
   database_version = "POSTGRES_17"
-
-  depends_on = [
-    google_service_networking_connection.private_vpc_connection
-  ]
 
   settings {
     tier = "db-perf-optimized-N-2"

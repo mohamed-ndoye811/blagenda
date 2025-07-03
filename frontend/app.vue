@@ -1,6 +1,12 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtPage />
+    <NuxtLoadingIndicator />
+  </NuxtLayout>
 </template>
+
+<style lang="scss">
+
+</style>
