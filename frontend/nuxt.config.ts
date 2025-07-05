@@ -13,7 +13,10 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: ['@use "@/assets/scss/variables/index.scss" as * ;', '@use "@/assets/scss/global.scss" as * ;'].join("\n"),
+          additionalData: [
+            '@use "@/assets/scss/variables/index.scss" as * ;',
+            '@use "@/assets/scss/global.scss" as * ;',
+          ].join("\n"),
         },
       },
     },
@@ -21,6 +24,9 @@ export default defineNuxtConfig({
   ssr: true,
   nitro: {
     preset: "node-server",
+  },
+  app: {
+    pageTransition: true,
   },
   modules: [
     "@nuxt/eslint",

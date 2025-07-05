@@ -1,8 +1,14 @@
-import { NuxtLayout } from '../../.nuxt/components';
 <script setup lang="ts">
+import { gsap } from "gsap";
+import { CustomEase } from "gsap/CustomEase";
+import { Flip } from "gsap/Flip";
+
+gsap.registerPlugin(Flip, CustomEase);
+
 definePageMeta({
   layout: false,
 });
+
 const runtimeConfig = useRuntimeConfig();
 const authToken = useCookie("auth_token", {
   maxAge: runtimeConfig.public.auth.timeout, // 7 days
@@ -59,9 +65,11 @@ function handleSubmit(event: Event) {
     <NuxtLayout name="auth">
       <template #form>
         <form @submit="handleSubmit">
-          <div class="title">
+          <div class="title" @click="testFlip">
             <h2>Rejoins-nous !</h2>
-            <p class="subtitle">Créée ton compte et reprends tes plannings en main !</p>
+            <p class="subtitle">
+              Créée ton compte et reprends tes plannings en main !
+            </p>
           </div>
           <AppFormInput
             id="username"
@@ -109,15 +117,18 @@ function handleSubmit(event: Event) {
       </template>
 
       <template #footer>
-        <p>Vous avez déjà un compte ? <a href="/auth/login">Connectez-vous !</a></p>
+        <p>
+          Vous avez déjà un compte ?
+          <NuxtLink to="/auth/login">Connectez-vous !</NuxtLink>
+        </p>
       </template>
     </NuxtLayout>
   </div>
 </template>
 
 <style lang="scss">
-.auth-container {
-  justify-content: end !important;
-  background-image: url("@/assets/images/grdnt_blue.webp") !important;
-}
+// .auth-container {
+//   justify-content: end !important;
+//   background-image: url("@/assets/images/grdnt_blue.webp") !important;
+// }
 </style>

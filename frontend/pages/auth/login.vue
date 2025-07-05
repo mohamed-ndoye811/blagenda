@@ -1,9 +1,14 @@
-import { RuntimeConfig } from '@nuxt/schema'; import { AppFormInput } from
-'../../.nuxt/components';
 <script setup lang="ts">
+import { gsap } from "gsap";
+import { CustomEase } from "gsap/CustomEase";
+import { Flip } from "gsap/Flip";
+
+gsap.registerPlugin(Flip, CustomEase);
+
 definePageMeta({
   layout: false,
 });
+
 const runtimeConfig = useRuntimeConfig();
 const authToken = useCookie("auth_token", {
   maxAge: runtimeConfig.public.auth.timeout, // 7 days
@@ -65,39 +70,19 @@ function handleSubmit(event: Event) {
             <h2>Welcome Back !</h2>
             <p class="subtitle">Connecte-toi et retrouve tes calendriers</p>
           </div>
-          <AppFormInput
-            id="email"
-            v-model="credentials.email"
-            label="Addresse e-mail"
-            name="email"
-            type="text"
-            placeholder="john.doe@email.com"
-            required
-          />
-          <AppFormInput
-            id="password"
-            v-model="credentials.password"
-            label="Mot de passe"
-            name="password"
-            type="password"
-            placeholder="***********"
-            required
-          />
+          <AppFormInput id="email" v-model="credentials.email" label="Addresse e-mail" name="email" type="text"
+            placeholder="john.doe@email.com" required />
+          <AppFormInput id="password" v-model="credentials.password" label="Mot de passe" name="password"
+            type="password" placeholder="***********" required />
 
-          <AppButton
-            id="login-button"
-            label="Se connecter"
-            name="login"
-            type="submit"
-            value="Login"
-            class="form-input"
-          />
+          <AppButton id="login-button" label="Se connecter" name="login" type="submit" value="Login"
+            class="form-input" />
         </form>
       </template>
 
       <template #footer>
         <p>
-          Tu n'as pas de compte ? <a href="/auth/register">Créées-en un !</a>
+          Tu n'as pas de compte ? <NuxtLink to="/auth/register">Créées-en un !</NuxtLink>
         </p>
       </template>
     </NuxtLayout>
@@ -105,8 +90,7 @@ function handleSubmit(event: Event) {
 </template>
 
 <style lang="scss">
-.auth-container {
-  justify-content: start !important;
-  background-image: url("@/assets/images/grdnt_or.webp") !important;
-}
-</style>
+// .auth-container {
+//   justify-content: start !important;
+//   background-image: url("@/assets/images/grdnt_or.webp") !important;
+// }</style>
