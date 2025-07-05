@@ -2,7 +2,7 @@ import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateUserDto } from './create-user.dto';
 import { IsEnum, IsOptional, IsUrl } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { UserRole } from '@prisma/client';
+import { userRoleEnum } from 'database/user.entity';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
@@ -13,7 +13,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   avatarURL: string;
 
-  @IsEnum(UserRole)
+  @IsEnum(userRoleEnum)
   @Expose()
   @ApiProperty({
     default: 'john.doe@gmail.com',
