@@ -1,5 +1,2 @@
-echo "▶️ Appliquer les migrations Prisma..."
-npx prisma migrate deploy
-
-echo "🚀 Lancement de l'application NestJS"
+echo "🚀 Lancement de l'application NestJS avec Drizzle ORM"
 exec node dist/main
