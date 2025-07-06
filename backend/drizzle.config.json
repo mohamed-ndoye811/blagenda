@@ -1,0 +1,8 @@
+{
+  "dialect": "postgresql",
+  "schema": "./database/schema.ts",
+  "out": "./drizzle",
+  "dbCredentials": {
+    "url": "postgres://devuser:devpass@localhost:5433/devdb"
+  }
+}

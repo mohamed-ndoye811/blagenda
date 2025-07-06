@@ -31,7 +31,7 @@ function handleSubmit(event: Event) {
 
   if (email && password) {
     // Example: Send credentials to the server for authentication
-    fetch(`${runtimeConfig.public.apiUrl}/api/auth/login`, {
+    fetch(`${runtimeConfig.public.apiUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
