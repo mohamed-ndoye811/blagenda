@@ -11,7 +11,7 @@ import { EventTypeService } from './event-type.service';
 import { CreateEventTypeDto } from './dto/create-event-type.dto';
 import { UpdateEventTypeDto } from './dto/update-event-type.dto';
 
-@Controller('event-type')
+@Controller('event-types')
 export class EventTypeController {
   constructor(private readonly eventTypeService: EventTypeService) {}
 

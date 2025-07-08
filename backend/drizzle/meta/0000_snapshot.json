@@ -1,11 +1,11 @@
 {
-  "id": "ae360471-a7ca-4579-961e-58dd7d37ff44",
+  "id": "fd9cc795-903c-4f8a-95e5-59a668681947",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.EventType": {
-      "name": "EventType",
+    "public.event_types": {
+      "name": "event_types",
       "schema": "",
       "columns": {
         "id": {
@@ -39,6 +39,19 @@
           "type": "json",
           "primaryKey": false,
           "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -49,8 +62,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.event": {
-      "name": "event",
+    "public.events": {
+      "name": "events",
       "schema": "",
       "columns": {
         "id": {
@@ -90,14 +103,27 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "event_typeId_EventType_id_fk": {
-          "name": "event_typeId_EventType_id_fk",
-          "tableFrom": "event",
-          "tableTo": "EventType",
+        "events_typeId_event_types_id_fk": {
+          "name": "events_typeId_event_types_id_fk",
+          "tableFrom": "events",
+          "tableTo": "event_types",
           "columnsFrom": [
             "typeId"
           ],
@@ -114,8 +140,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.item_type": {
-      "name": "item_type",
+    "public.item_types": {
+      "name": "item_types",
       "schema": "",
       "columns": {
         "id": {
@@ -148,6 +174,19 @@
           "type": "json",
           "primaryKey": false,
           "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -158,8 +197,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.Item": {
-      "name": "Item",
+    "public.items": {
+      "name": "items",
       "schema": "",
       "columns": {
         "id": {
@@ -181,14 +220,27 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "Item_itemTypeId_item_type_id_fk": {
-          "name": "Item_itemTypeId_item_type_id_fk",
-          "tableFrom": "Item",
-          "tableTo": "item_type",
+        "items_itemTypeId_item_types_id_fk": {
+          "name": "items_itemTypeId_item_types_id_fk",
+          "tableFrom": "items",
+          "tableTo": "item_types",
           "columnsFrom": [
             "itemTypeId"
           ],
@@ -238,13 +290,13 @@
           "name": "firstname",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "lastname": {
           "name": "lastname",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "username": {
           "name": "username",

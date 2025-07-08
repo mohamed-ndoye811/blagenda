@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
 import { EventTypeModule } from './event-type/event-type.module';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { EventTypeModule } from './event-type/event-type.module';
     UsersModule,
     AuthModule,
     EventTypeModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService],

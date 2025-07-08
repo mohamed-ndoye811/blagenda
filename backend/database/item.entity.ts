@@ -1,4 +1,4 @@
-import { pgTable, uuid, json } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, json, timestamp } from 'drizzle-orm/pg-core';
 import { itemTypes } from './item-type.entity';
 
 // Table items
@@ -8,6 +8,9 @@ export const items = pgTable('items', {
   itemTypeId: uuid('itemTypeId')
     .notNull()
     .references(() => itemTypes.id),
+
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  updatedAt: timestamp('updatedAt'),
 });
 
 // Type pour l'insertion

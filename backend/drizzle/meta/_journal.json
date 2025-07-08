@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1751822263748,
-      "tag": "0000_sad_matthew_murdock",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1751823633758,
-      "tag": "0001_next_silver_surfer",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1751825216468,
-      "tag": "0002_orange_sentinels",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1751931912497,
-      "tag": "0003_steep_magneto",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1751931958142,
-      "tag": "0004_special_vin_gonzales",
+      "when": 1751961895180,
+      "tag": "0000_nasty_the_renegades",
       "breakpoints": true
     }
   ]

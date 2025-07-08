@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, json } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, json, timestamp } from 'drizzle-orm/pg-core';
 import { eventTypes } from './event-type.entity';
 
 // Table events
@@ -11,6 +11,9 @@ export const events = pgTable('events', {
   typeId: uuid('typeId')
     .notNull()
     .references(() => eventTypes.id),
+
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  updatedAt: timestamp('updatedAt'),
 });
 
 // Type pour l'insertion
