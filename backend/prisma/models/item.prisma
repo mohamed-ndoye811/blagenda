@@ -1,6 +1,0 @@
-model Item {
-  id           String    @id @default(uuid())
-  fieldsValues Json      @default("{}")
-  itemType     ItemType  @relation("ItemToType", fields: [itemTypeId], references: [id])
-  itemTypeId   String
-}
