@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { DrizzleModule } from './drizzle/drizzle.module';
+import { EventTypeModule } from './event-type/event-type.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DrizzleModule } from './drizzle/drizzle.module';
     DrizzleModule,
     UsersModule,
     AuthModule,
+    EventTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
